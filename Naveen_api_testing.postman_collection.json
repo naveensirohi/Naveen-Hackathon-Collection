@@ -1,0 +1,1237 @@
+{
+	"info": {
+		"_postman_id": "dd4f9e32-97ac-4e9f-bbf4-75a040bf7a5c",
+		"name": "Naveen_api_testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85697d49-c9fd-4c1d-8c9d-3dcc3ef6da18",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"// To save token to Variable",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Access_token\",jsonData.token)",
+									"});",
+									"",
+									"pm.test( \"Validate token schema\",() => {",
+									"    const Token_json_schema = JSON.parse(environment.Token_json_schema);  // Fetching from environment Variable",
+									"    pm.response.to.have.jsonSchema(Token_json_schema); // Validate the response",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				}
+			],
+			"description": "This test takes care of generating the access token and using it in all other requests.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create Booking",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69882ee9-06aa-4dc7-b054-7a6b513fa6f6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"// To save token to Variable",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Access_token\",jsonData.token)",
+									"});",
+									"",
+									"pm.test( \"Validate token schema\",() => {",
+									"    const Token_json_schema = JSON.parse(environment.Token_json_schema);  // Fetching from environment Variable",
+									"    pm.response.to.have.jsonSchema(Token_json_schema); // Validate the response",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Make_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c4f0fd6-f240-4dfa-a86c-57b1f957a261",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Id to Variable",
+									"pm.test(\"To save Booking Id to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Booking_Id\",jsonData.bookingid)",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Created_Booking_Schema = JSON.parse(environment.Created_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Created_Booking_Schema); // Validate the response",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{$randomFirstName}}\",\n    \"lastname\" : \"{{$randomLastName}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{$randomDateRecent}}\",\n        \"checkout\" : \"{{$randomDateFuture}}\"\n    },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This set of APIs takes care of creating booking, it uses create access token from the above test. ",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a6921978-8787-4070-b611-e726f6596233",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5aed922-1779-423d-8b18-3c8e2e4fc2a8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get booking ",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ed8f0e13-32fe-408a-a0e0-d38d05912a9b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 100ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    var data = jsonData.token",
+									"    pm.environment.set(\"Access_token\",data)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Make_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "864daa65-2e5f-4482-86d1-d1120dbc0ca0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Id to Variable",
+									"pm.test(\"To save Booking Id to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Booking_Id\",jsonData.bookingid)",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Created_Booking_Schema = JSON.parse(environment.Created_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Created_Booking_Schema); // Validate the response",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8d8680cc-42ed-4687-9cd3-7b76ae151440",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{$randomFirstName}}\",\n    \"lastname\" : \"{{$randomLastName}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{$randomDateRecent}}\",\n        \"checkout\" : \"{{$randomDateFuture}}\"\n    },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_booking_details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f263b24-c118-4e13-bd60-c4befdbf8d1d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Response Body is not null",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"//To Validate Json Schema for get booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Get_Booking_Schema = JSON.parse(environment.Get_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Get_Booking_Schema); // Validate the response",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{Url}}/booking/{{Booking_Id}}",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking",
+								"{{Booking_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This API endpoint returns the data of a particular booking ID.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "06ad6315-7054-4135-8775-18e9832f3348",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "815f823e-4921-42c6-ba8f-0f70c9551afb",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Updated_booking",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e949584a-3e09-4953-9bda-c026874e1fe3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 100ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    var data = jsonData.token",
+									"    pm.environment.set(\"Access_token\",data)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Make_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5d1e9cab-9d94-4539-b71a-2ee7d463cdf5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Id to Variable",
+									"pm.test(\"To save Booking Id to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Booking_Id\",jsonData.bookingid)",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Created_Booking_Schema = JSON.parse(environment.Created_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Created_Booking_Schema); // Validate the response",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4d476baf-172f-4cd4-8822-9da62603ec09",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{$randomFirstName}}\",\n    \"lastname\" : \"{{$randomLastName}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{$randomDateRecent}}\",\n        \"checkout\" : \"{{$randomDateFuture}}\"\n    },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85b39dcd-aecd-4062-98b5-a449e19ac80d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Update_Booking_Schema = JSON.parse(environment.Update_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Update_Booking_Schema); // Validate the response",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "73d8f093-558a-44a2-bb0d-61f564cb90b8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{Access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" :\"{{$randomFirstName}}\",\n    \"lastname\" : \"Sirohi\",\n    \"totalprice\" :\"1122\",\n    \"depositpaid\" : \"True\",\n    \"bookingdates\" : {\n        \"checkin\" : \"2020-10-20\",\n        \"checkout\" : \"2020-10-25\"\n    },\n    \"additionalneeds\" : \"Extra Bed\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking/{{Booking_Id}}",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking",
+								"{{Booking_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This API endpoint takes care of updating the previous booking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5234407f-6862-45b5-a851-d2fda859da9a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "137e5773-7641-4e34-86db-055039d9d6c0",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Partial_update",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c845107-a47d-4dc4-b4aa-8abf93e13826",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 100ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    var data = jsonData.token",
+									"    pm.environment.set(\"Access_token\",data)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Make_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4c13442c-95fd-4db4-9974-a60906a1c8fb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Id to Variable",
+									"pm.test(\"To save Booking Id to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Booking_Id\",jsonData.bookingid)",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Created_Booking_Schema = JSON.parse(environment.Created_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Created_Booking_Schema); // Validate the response",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d33d9299-e298-4f15-95dd-21a8428a0f63",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{$randomFirstName}}\",\n    \"lastname\" : \"{{$randomLastName}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{$randomDateRecent}}\",\n        \"checkout\" : \"{{$randomDateFuture}}\"\n    },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial_update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f9815428-9f12-4436-ab2c-f3f2c633d7a4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Response Body is not null",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Details to Variables",
+									"pm.test(\"To save Booking details to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Partial_Last_Name\",jsonData.lastname),",
+									"    pm.environment.set(\"Partial_total_price\",jsonData.totalprice),",
+									"    pm.environment.set(\"Partial_Deposit_Paid\",jsonData.depositpaid),",
+									"    pm.environment.set(\"Partial_Additional_Needs\",jsonData.additionalneeds)",
+									"});",
+									"",
+									"//To Validate Json Schema",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Partial_Update_Schema = JSON.parse(environment.Partial_Update_Schema );  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Partial_Update_Schema); // Validate the response",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "cookie",
+								"value": "token={{Access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lastname\" : \"{{$randomlastname}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n        },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{Url}}/booking/{{Booking_Id}}",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking",
+								"{{Booking_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This API endpoint updates partial booking done in make booking end point.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6a51a9ad-2751-43e7-97ab-47d586c31a33",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2ed83ff9-d461-4177-b351-216bc79bf97e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Delete_booking",
+			"item": [
+				{
+					"name": "Create_access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3864237f-ea7c-435c-8b8d-a9f5e39ec636",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 100ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"});",
+									"pm.test(\"To inlclude token value\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"});",
+									"pm.test(\"Response should not be null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"pm.test(\"To save token value to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    var data = jsonData.token",
+									"    pm.environment.set(\"Access_token\",data)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/auth",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Make_booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f705f9ee-e972-4c88-9bdf-bc4189f49c5c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is not null\", function () {",
+									"    pm.expect(pm.response.text()).not.null",
+									"});",
+									"",
+									"// To save Booking Id to Variable",
+									"pm.test(\"To save Booking Id to variable\", function (){",
+									"    var jsonData= pm.response.json();",
+									"    pm.environment.set(\"Booking_Id\",jsonData.bookingid)",
+									"});",
+									"",
+									"//To Validate Json Schema for create booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const Created_Booking_Schema = JSON.parse(environment.Created_Booking_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(Created_Booking_Schema); // Validate the response",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "086ada58-8134-435d-b231-de29142a46d0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{$randomFirstName}}\",\n    \"lastname\" : \"{{$randomLastName}}\",\n    \"totalprice\" :\"{{$randomInt}}\",\n    \"depositpaid\" : \"{{$randomBoolean}}\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{$randomDateRecent}}\",\n        \"checkout\" : \"{{$randomDateFuture}}\"\n    },\n    \"additionalneeds\" : \"{{$randomProduct}}\"\n}"
+						},
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bcccc5dd-21f7-4583-a746-a65a4a6c3b3a",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Response Body should returen Created",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Created\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{Access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Url}}/booking/{{Booking_Id}}",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking",
+								"{{Booking_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Booking",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "cookie",
+								"value": "token={{Access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Url}}/booking/{{Booking_Id}}",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking",
+								"{{Booking_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This API endpoint deletes booking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8ee055a1-345b-498a-9f37-ea26fdf59c6a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "78e026f5-099f-47e3-95aa-acc80ad22754",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get_all_booking_Ids",
+			"item": [
+				{
+					"name": "Get_booking_all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9da378e6-f860-4a1e-a37d-4e2ac461951e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should be an Array\", function () {",
+									"    var response = pm.response.json();",
+									"    pm.expect(response).to.be.a('array');",
+									"});",
+									"pm.test(\"Response should contain at least one bookingid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].bookingid).to.not.be.null;",
+									"});",
+									"pm.test(\"Response should be a number\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].bookingid).to.be.a('number');",
+									"});",
+									"",
+									"//To Validate Json Schema for get all booking",
+									"pm.test(\"To validate Json Schema\", function(){",
+									"const get_all_Bookings_Schema= JSON.parse(environment.get_all_Bookings_Schema);  // Fetching from environment Variable",
+									"pm.response.to.have.jsonSchema(get_all_Bookings_Schema); // Validate the response",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "cookie",
+								"value": "token={{Access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Url}}/booking",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This API endpoint returns all the Booking IDs",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4ef95710-fda2-4dae-b315-22c127cd02a5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e73d20b4-041d-420f-84d2-b076d9733818",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6ebbf76f-841e-4758-88ef-59e671760f83",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9d7feca0-593f-48a4-bc66-efcd4fbb19a8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
