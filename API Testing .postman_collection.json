@@ -1,0 +1,428 @@
+{
+	"info": {
+		"_postman_id": "dd4f9e32-97ac-4e9f-bbf4-75a040bf7a5c",
+		"name": "API Testing ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create_Access_Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1318dc2-dc6a-49a2-a0d0-c83e142370f9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 100ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);",
+							"});",
+							"pm.test(\"To inlclude token value\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"token\");",
+							"});",
+							"pm.test(\"Response should not be null\", function () {",
+							"    pm.expect(pm.response.text()).not.null",
+							"});",
+							"pm.test(\"To save token value to variable\", function (){",
+							"    var jsonData= pm.response.json();",
+							"    var data = jsonData.token",
+							"    pm.environment.set(\"Access_token\",data)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{Url}}/auth",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"auth"
+					]
+				},
+				"description": "To get access token, store it in variable and use it in rest of the endpoints in the collection"
+			},
+			"response": []
+		},
+		{
+			"name": "Making a Booking ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "49202d50-462e-419c-b1aa-daf7c9e72fe9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var schema = {",
+							"    \"$schema\": \"http://json-schema.org/draft-07/schema\",",
+							"    \"$id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"title\": \"Create booking schema\",",
+							"    \"description\": \"The root schema comprises the entire JSON document.\",",
+							"    \"default\": {},",
+							"    \"examples\": [",
+							"        {",
+							"            \"bookingid\": 11,",
+							"            \"booking\": {",
+							"                \"firstname\": \"Naveen\",",
+							"                \"lastname\": \"Sirohi\",",
+							"                \"totalprice\": 12000,",
+							"                \"depositpaid\": true,",
+							"                \"bookingdates\": {",
+							"                    \"checkin\": \"2021-01-01\",",
+							"                    \"checkout\": \"2021-01-01\"",
+							"                },",
+							"                \"additionalneeds\": \"Breakfast\"",
+							"            }",
+							"        }",
+							"    ],",
+							"    \"required\": [",
+							"        \"bookingid\",",
+							"        \"booking\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"bookingid\": {",
+							"            \"$id\": \"#/properties/bookingid\",",
+							"            \"type\": \"integer\",",
+							"            \"title\": \"The bookingid schema\",",
+							"            \"default\": 0,",
+							"        },",
+							"        \"booking\": {",
+							"            \"$id\": \"#/properties/booking\",",
+							"            \"type\": \"object\",",
+							"            \"title\": \"The booking schema\",",
+							"            \"default\": {},",
+							"            \"required\": [",
+							"                \"firstname\",",
+							"                \"lastname\",",
+							"                \"totalprice\",",
+							"                \"depositpaid\",",
+							"                \"bookingdates\",",
+							"                \"additionalneeds\"",
+							"            ],",
+							"            \"properties\": {",
+							"                \"firstname\": {",
+							"                    \"$id\": \"#/properties/booking/properties/firstname\",",
+							"                    \"type\": \"string\",",
+							"",
+							"                },",
+							"                \"lastname\": {",
+							"                    \"$id\": \"#/properties/booking/properties/lastname\",",
+							"                    \"type\": \"string\",",
+							"                },",
+							"                \"totalprice\": {",
+							"                    \"$id\": \"#/properties/booking/properties/totalprice\",",
+							"                    \"type\": \"integer\",",
+							"                    \"default\": 0,",
+							"",
+							"                },",
+							"                \"depositpaid\": {",
+							"                    \"$id\": \"#/properties/booking/properties/depositpaid\",",
+							"                    \"type\": \"boolean\",",
+							"                    \"default\": false,",
+							"",
+							"                },",
+							"                \"bookingdates\": {",
+							"                    \"$id\": \"#/properties/booking/properties/bookingdates\",",
+							"                    \"type\": \"object\",",
+							"                    \"default\": {},",
+							"                    \"required\": [",
+							"                        \"checkin\",",
+							"                        \"checkout\"",
+							"                    ],",
+							"                    \"properties\": {",
+							"                        \"checkin\": {",
+							"                            \"$id\": \"#/properties/booking/properties/bookingdates/properties/checkin\",",
+							"                            \"type\": \"string\",",
+							"                            \"default\": \"\",",
+							"",
+							"                        \"checkout\": {",
+							"                            \"$id\": \"#/properties/booking/properties/bookingdates/properties/checkout\",",
+							"                            \"type\": \"string\",",
+							"                            \"default\": \"\",",
+							"                        }",
+							"                    },",
+							"                    \"additionalProperties\": true",
+							"                },",
+							"                \"additionalneeds\": {",
+							"                    \"$id\": \"#/properties/booking/properties/additionalneeds\",",
+							"                    \"type\": \"string\",",
+							"                    \"default\": \"\",",
+							"",
+							"                }",
+							"            },",
+							"            \"additionalProperties\": true",
+							"        }",
+							"    },",
+							"    \"additionalProperties\": true",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"Naveen\",\n    \"lastname\" : \"Sirohi\",\n    \"totalprice\" : 12000,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2021-01-01\",\n        \"checkout\" : \"2021-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}"
+				},
+				"url": {
+					"raw": "{{Url}}/booking",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Booking ID Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/10",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updating Booking",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\": \"Naveen\",\n    \"lastname\": \"Singh\",\n    \"totalprice\": 12100,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2021-02-15\",\n        \"checkout\": \"2021-02-25\"\n    }\n}"
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/11",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial Update",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lastname\" : \"Singh\",\n    \"totalprice\" : 1100\n}\n    "
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/11",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Booking Ids",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking"
+					]
+				},
+				"description": "This API Endpoint returns all the Booking Ids."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "51e5fbe9-e7ad-432e-893e-b50f05d900bc",
+						"exec": [
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Created\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/13",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"13"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
